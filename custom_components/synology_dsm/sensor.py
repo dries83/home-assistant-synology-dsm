@@ -1,4 +1,4 @@
-"""Support for Synology DSM sensors."""
+"""Support for Synology DSM sensors. 26-12-2024"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -17,12 +17,10 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
-    DATA_MEGABYTES,
-    DATA_RATE_KILOBYTES_PER_SECOND,
-    DATA_TERABYTES,
     PERCENTAGE,
-    TEMP_CELSIUS,
-    DATA_GIGABYTES,
+    UnitOfInformation,
+    UnitOfDataRate,
+    UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
@@ -40,7 +38,6 @@ from .entity import (
 )
 from .models import SynologyDSMData
 from .py_synologydsm_api_aux.backup.backup import SynoBackup
-
 
 @dataclass
 class SynologyDSMSensorEntityDescription(
@@ -118,7 +115,7 @@ UTILISATION_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoCoreUtilization.API_KEY,
         key="memory_size",
         name="Memory Size",
-        native_unit_of_measurement=DATA_MEGABYTES,
+        native_unit_of_measurement=UnitOfInformation.MEGABYTES,
         icon="mdi:memory",
         entity_registry_enabled_default=False,
         state_class=SensorStateClass.MEASUREMENT,
@@ -127,7 +124,7 @@ UTILISATION_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoCoreUtilization.API_KEY,
         key="memory_cached",
         name="Memory Cached",
-        native_unit_of_measurement=DATA_MEGABYTES,
+        native_unit_of_measurement=UnitOfInformation.MEGABYTES,
         icon="mdi:memory",
         entity_registry_enabled_default=False,
         state_class=SensorStateClass.MEASUREMENT,
@@ -136,7 +133,7 @@ UTILISATION_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoCoreUtilization.API_KEY,
         key="memory_available_swap",
         name="Memory Available (Swap)",
-        native_unit_of_measurement=DATA_MEGABYTES,
+        native_unit_of_measurement=UnitOfInformation.MEGABYTES,
         icon="mdi:memory",
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -144,7 +141,7 @@ UTILISATION_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoCoreUtilization.API_KEY,
         key="memory_available_real",
         name="Memory Available (Real)",
-        native_unit_of_measurement=DATA_MEGABYTES,
+        native_unit_of_measurement=UnitOfInformation.MEGABYTES,
         icon="mdi:memory",
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -152,7 +149,7 @@ UTILISATION_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoCoreUtilization.API_KEY,
         key="memory_total_swap",
         name="Memory Total (Swap)",
-        native_unit_of_measurement=DATA_MEGABYTES,
+        native_unit_of_measurement=UnitOfInformation.MEGABYTES,
         icon="mdi:memory",
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -160,7 +157,7 @@ UTILISATION_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoCoreUtilization.API_KEY,
         key="memory_total_real",
         name="Memory Total (Real)",
-        native_unit_of_measurement=DATA_MEGABYTES,
+        native_unit_of_measurement=UnitOfInformation.MEGABYTES,
         icon="mdi:memory",
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -168,7 +165,7 @@ UTILISATION_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoCoreUtilization.API_KEY,
         key="network_up",
         name="Upload Throughput",
-        native_unit_of_measurement=DATA_RATE_KILOBYTES_PER_SECOND,
+        native_unit_of_measurement=UnitOfDataRate.KILOBYTES_PER_SECOND,
         icon="mdi:upload",
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -176,7 +173,7 @@ UTILISATION_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoCoreUtilization.API_KEY,
         key="network_down",
         name="Download Throughput",
-        native_unit_of_measurement=DATA_RATE_KILOBYTES_PER_SECOND,
+        native_unit_of_measurement=UnitOfDataRate.KILOBYTES_PER_SECOND,
         icon="mdi:download",
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -192,7 +189,7 @@ STORAGE_VOL_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoStorage.API_KEY,
         key="volume_size_total",
         name="Total Size",
-        native_unit_of_measurement=DATA_TERABYTES,
+        native_unit_of_measurement=UnitOfInformation.TERABYTES,
         icon="mdi:chart-pie",
         entity_registry_enabled_default=False,
         state_class=SensorStateClass.MEASUREMENT,
@@ -201,7 +198,7 @@ STORAGE_VOL_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoStorage.API_KEY,
         key="volume_size_used",
         name="Used Space",
-        native_unit_of_measurement=DATA_TERABYTES,
+        native_unit_of_measurement=UnitOfInformation.TERABYTES,
         icon="mdi:chart-pie",
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -216,7 +213,7 @@ STORAGE_VOL_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoStorage.API_KEY,
         key="volume_disk_temp_avg",
         name="Average Disk Temp",
-        native_unit_of_measurement=TEMP_CELSIUS,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
@@ -224,7 +221,7 @@ STORAGE_VOL_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoStorage.API_KEY,
         key="volume_disk_temp_max",
         name="Maximum Disk Temp",
-        native_unit_of_measurement=TEMP_CELSIUS,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         entity_registry_enabled_default=False,
         entity_category=EntityCategory.DIAGNOSTIC,
@@ -250,7 +247,7 @@ STORAGE_DISK_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoStorage.API_KEY,
         key="disk_temp",
         name="Temperature",
-        native_unit_of_measurement=TEMP_CELSIUS,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
@@ -262,7 +259,7 @@ INFORMATION_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         api_key=SynoDSMInformation.API_KEY,
         key="temperature",
         name="Temperature",
-        native_unit_of_measurement=TEMP_CELSIUS,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
@@ -276,13 +273,12 @@ INFORMATION_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
 )
-
 HYPER_BACKUP_SENSORS: tuple[SynologyDSMSensorEntityDescription, ...] = (
     SynologyDSMSensorEntityDescription(
         api_key=SynoBackup.API_KEY,
         key="used_size",
         name="Target Current Size",
-        native_unit_of_measurement=DATA_GIGABYTES,
+        native_unit_of_measurement=UnitOfInformation.GIGABYTES,
         icon="mdi:chart-pie",
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -440,11 +436,11 @@ class SynoDSMUtilSensor(SynoDSMSensor):
             return None
 
         # Data (RAM)
-        if self.native_unit_of_measurement == DATA_MEGABYTES:
+        if self.native_unit_of_measurement == UnitOfInformation.MEGABYTES:
             return round(attr / 1024.0**2, 1)
 
         # Network
-        if self.native_unit_of_measurement == DATA_RATE_KILOBYTES_PER_SECOND:
+        if self.native_unit_of_measurement == UnitOfDataRate.KILOBYTES_PER_SECOND:
             return round(attr / 1024.0, 1)
 
         # CPU load average
@@ -482,10 +478,11 @@ class SynoDSMStorageSensor(SynologyDSMDeviceEntity, SynoDSMSensor):
             return None
 
         # Data (disk space)
-        if self.native_unit_of_measurement == DATA_TERABYTES:
+        if self.native_unit_of_measurement == UnitOfInformation.TERABYTES:
             return round(attr / 1024.0**4, 2)
 
         return attr
+
 
 class SynoDSMHyperBackupSensor(SynologyDSMBackupTaskEntity, SynoDSMSensor):
     """Representation a Synology HyperBackup sensor."""
@@ -515,7 +512,7 @@ class SynoDSMHyperBackupSensor(SynologyDSMBackupTaskEntity, SynoDSMSensor):
             if attr.tzinfo is None:
                 attr = attr.replace(tzinfo=datetime.now(timezone.utc).astimezone().tzinfo)
 
-        if self.native_unit_of_measurement == DATA_GIGABYTES:
+        if self.native_unit_of_measurement == UnitOfInformation.GIGABYTES:
             return round(attr / 1024.0 ** 2, 1)
 
         return attr
