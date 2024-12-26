@@ -1,4 +1,4 @@
-"""Constants for Synology DSM."""
+"""Constants for Synology DSM. 26-12-2024"""
 from __future__ import annotations
 
 from synology_dsm.api.surveillance_station.const import SNAPSHOT_PROFILE_BALANCED
