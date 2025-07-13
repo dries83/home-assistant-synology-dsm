@@ -1,5 +1,5 @@
 {
-  "name": "SynologyDSM",
+  "name": "Synology DSM",
   "render_readme": true,
   "homeassistant": "2025.7.0"
 }
